@@ -5,7 +5,7 @@ using UnityEngine;
 public class parallax : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    public float xOffset = 0f, speed = 1;
+    public float xOffset = 0f;
 
     
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class parallax : MonoBehaviour
     void Update()
     {           
         
-        xOffset += speed * Time.deltaTime;
+        xOffset += -GameObject.Find("Player").GetComponent<Player>().speedofplatforms/3 * Time.deltaTime;
         spriteRenderer.material.mainTextureOffset = new Vector2(xOffset, spriteRenderer.material.mainTextureOffset.y);
         
     }
