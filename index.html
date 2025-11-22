@@ -3,28 +3,244 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Infinite-Runner-Unity-main</title>
+    <title>unity demo</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #0a0a0a;
+        color: #e0e0e0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 40px;
+        z-index: 100;
+        background: rgba(10, 10, 10, 0.97);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .header-name {
+        font-size: 1.5rem;
+        font-weight: 300;
+        letter-spacing: 1px;
+        color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .header-links {
+        display: flex;
+        gap: 25px;
+        position: absolute;
+        right: 40px;
+        align-items: center;
+      }
+
+      .header-links a {
+        color: #888;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .header-links a.text-link {
+        font-size: 0.9rem;
+        font-weight: 300;
+        letter-spacing: 1px;
+      }
+
+      .header-links a:not(.text-link) {
+        font-size: 1.2rem;
+      }
+
+      .header-links a:hover {
+        color: #fff;
+      }
+
+      /* Layout for Unity content: center canvas + footer together */
+      #unity-container {
+        margin-top: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* centers children horizontally */
+      }
+
+      #unity-canvas {
+        display: block;
+      }
+
+      /* Footer directly under canvas, same width alignment */
+      #unity-footer {
+        width: 960px;
+        max-width: 100%;
+        margin-top: 8px;
+        margin-bottom: 24px;
+        padding: 0 4px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      /* OVERRIDE Unity’s circular button & positioning completely */
+      #unity-fullscreen-button {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        background: rgba(255, 255, 255, 0.02) !important;
+        background-image: none !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        margin: 0 !important;
+        padding: 6px 14px !important;
+        box-shadow: none !important;
+
+        cursor: pointer;
+        color: #e0e0e0;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 400;
+        font-family: inherit;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: background 120ms ease, border-color 120ms ease,
+                    transform 120ms ease, color 120ms ease;
+      }
+
+      #unity-fullscreen-button:hover {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border-color: rgba(255, 255, 255, 0.35) !important;
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+
+      #unity-fullscreen-button:active {
+        transform: translateY(0);
+      }
+
+      #unity-fullscreen-button span.icon {
+        font-size: 0.9rem;
+        line-height: 1;
+      }
+
+      @media (max-width: 768px) {
+        header {
+          height: 64px;
+          padding: 0 12px;
+          justify-content: space-between;
+        }
+
+        .header-name {
+          font-size: 1.1rem;
+          max-width: 55%;
+        }
+
+        .header-links {
+          position: static;
+          gap: 12px;
+        }
+
+        .header-links svg {
+          width: 18px;
+          height: 18px;
+        }
+
+        #unity-container {
+          margin-top: 64px;
+        }
+
+        #unity-footer {
+          width: 100%;
+          padding: 0 12px;
+        }
+      }
+    </style>
   </head>
   <body>
+    <header id="header">
+      <div class="header-name" id="headerName">demo</div>
+      <nav class="header-links">
+        <a href="https://rhl.sh/projects.html" class="text-link">projects</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect x="2" y="9" width="4" height="12"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+        </a>
+        <a href="https://github.com/chambres" target="_blank" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3
+                     m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61
+                     c3.14-.35 6.44-1.54 6.44-7
+                     A5.44 5.44 0 0 0 20 4.77
+                     5.07 5.07 0 0 0 19.91 1
+                     S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0
+                     C6.27.65 5.09 1 5.09 1
+                     A5.07 5.07 0 0 0 5 4.77
+                     a5.44 5.44 0 0 0-1.5 3.78
+                     c0 5.42 3.3 6.61 6.44 7
+                     A3.37 3.37 0 0 0 9 18.13V22">
+            </path>
+          </svg>
+        </a>
+      </nav>
+    </header>
+
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width="960" height="600" tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
-      <div id="unity-warning"> </div>
+      <div id="unity-warning"></div>
+
       <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Infinite-Runner-Unity-main</div>
+        <button id="unity-fullscreen-button">
+          <span class="icon">⤢</span>
+          <span>Fullscreen</span>
+        </button>
       </div>
     </div>
-    <script>
 
+    <script>
+      // Header text from URL
+      (function () {
+        var headerNameEl = document.getElementById('headerName');
+        if (!headerNameEl) return;
+        var path = window.location.pathname || "/";
+        path = path.replace(/\/+$/, '');
+        var segments = path.split('/').filter(Boolean);
+        var name = segments.length > 0 ? segments[segments.length - 1] : 'demo';
+        headerNameEl.textContent = name;
+      })();
+    </script>
+
+    <script>
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
@@ -32,12 +248,6 @@
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var warningBanner = document.querySelector("#unity-warning");
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
       function unityShowBanner(msg, type) {
         function updateBannerVisibility() {
           warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
@@ -48,7 +258,7 @@
         if (type == 'error') div.style = 'background: red; padding: 10px;';
         else {
           if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
+          setTimeout(function () {
             warningBanner.removeChild(div);
             updateBannerVisibility();
           }, 5000);
@@ -64,36 +274,19 @@
         codeUrl: buildUrl + "/a.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
-        productName: "Infinite-Runner-Unity-main",
+        productName: "",
         productVersion: "1.0",
         showBanner: unityShowBanner,
       };
 
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
         container.className = "unity-mobile";
         canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
       } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
         canvas.style.width = "960px";
         canvas.style.height = "600px";
       }
@@ -104,19 +297,20 @@
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
+          progressBarFull.style.width = (100 * progress) + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          if (fullscreenButton) {
+            fullscreenButton.onclick = () => {
+              unityInstance.SetFullscreen(1);
             };
+          }
+        }).catch((message) => {
+          alert(message);
+        });
+      };
 
       document.body.appendChild(script);
-
     </script>
   </body>
 </html>
